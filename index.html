@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RockTechnology WebApp</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Noto+Sans+Devanagari:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    :root { --mint-50:#eef8f7; --mint-100:#e3f3f2; --mint-200:#d4eeec; --mint-600:#1fb6b6; --mint-700:#16a0a0; --ink:#0f2f2f; --muted:#578a8a; --line:#cde8e8; --card:#fff; --shadow:0 10px 28px rgba(0,0,0,.12); --radius-xl:22px; }
+    *{box-sizing:border-box} html,body{height:100%}
+    body{margin:0;background:var(--mint-100);color:var(--ink);font:16px/1.45 'Inter','Noto Sans Devanagari',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif}
+    .app-bar{position:sticky;top:0;z-index:5;background:var(--mint-100);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:12px 18px}
+    .logo{width:38px;height:38px;border-radius:11px;background:linear-gradient(135deg,#1dd1a1,#48dbfb);box-shadow:inset 0 0 0 2px #fff}
+    .brand{font-weight:800;font-size:22px}.kicker{font-size:12px;color:var(--muted)}.spacer{flex:1}
+    .btn{appearance:none;border:0;border-radius:999px;background:var(--mint-600);color:#003838;font-weight:800;padding:10px 16px;cursor:pointer;box-shadow:var(--shadow);transition:transform .12s,background .12s}
+    .btn:hover{transform:translateY(-1px);background:var(--mint-700)} .btn.ghost{background:#e9faf9;color:#0c6b6b;border:1px solid var(--line);box-shadow:none}
+    .wrap{max-width:1150px;margin:18px auto 34px;padding:0 16px}
+    .login-stage{display:grid;place-items:center;min-height:calc(100vh - 70px)}
+    .login-card{width:min(520px,94vw);background:var(--card);border:1px solid var(--line);border-radius:28px;box-shadow:var(--shadow);overflow:hidden}
+    .welc{text-align:center;padding:26px 26px 12px;color:#13a4a4;font-weight:800;font-size:42px}
+    .welc-sub{text-align:center;color:#4a7a7a;margin-top:-6px}
+    .login-body{padding:0 26px 18px}.field{margin:14px 0}
+    .label{font-weight:700;color:#1f5757;margin-bottom:8px;display:block}
+    .input, textarea{width:100%;border:1px solid var(--line);background:#fbffff;color:var(--ink);padding:12px 14px;border-radius:14px;outline:none;font:inherit;box-shadow:inset 0 1px 0 rgba(0,0,0,.03)}
+    .login-foot{display:flex;align-items:center;justify-content:center;padding:10px 26px 22px}
+    .fine{color:#6a9595;font-size:12px;text-align:center} #loginMsg.fine{min-height:18px;padding-top:10px}
+    .fine-foot{border-top:1px solid var(--line);margin:0 26px;padding:18px 0}
+    .app-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius-xl);box-shadow:var(--shadow);overflow:hidden}
+    .tab-bar{display:flex;gap:10px;align-items:center;background:var(--mint-200);border-bottom:1px solid var(--line);padding:10px}
+    .pill{padding:10px 16px;border-radius:999px;background:#e9faf9;border:1px solid var(--line);color:#0e6a6a;font-weight:800;cursor:pointer}
+    .pill.active{background:var(--mint-600);color:#003838;border-color:#16b0b0}
+    .badge{margin-left:auto;background:#ecffff;border:1px solid var(--line);color:#0e6a6a;border-radius:999px;padding:6px 10px;font-weight:800}
+    .page{display:none}.page.active{display:block}
+    .sheet{padding:18px;background:var(--mint-50)}
+    .grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+    .grid2{display:grid;grid-template-columns:1fr 2fr;gap:16px}
+    .box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 10px 6px;box-shadow:0 2px 0 rgba(0,0,0,.03)}
+    .mini{font-size:13px;color:#3f6f6f;margin-bottom:6px;font-weight:700}
+    textarea.input{min-height:96px;resize:vertical}
+    .gen-right{position:sticky;bottom:16px;display:flex;justify-content:flex-end;margin-top:10px;padding-right:10px;gap:10px}
+    .hidden{display:none!important}
+    @media(max-width:980px){.grid,.grid2{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <header class="app-bar">
+    <div class="logo"></div>
+    <div><div class="brand">RockTechnology WebApp</div><div class="kicker">Light Theme • Client-side</div></div>
+    <div class="spacer"></div>
+    <button id="logoutBtn" class="btn ghost hidden">Log Out</button>
+  </header>
+
+  <main class="wrap">
+    <!-- Login -->
+    <section id="loginView" class="login-stage">
+      <div class="login-card">
+        <div class="welc">Welcome!</div>
+        <div class="welc-sub">Fill required fields — Generate — Download</div>
+        <div class="login-body">
+          <div class="field"><label class="label" for="loginId">LogIn ID</label><input id="loginId" class="input" placeholder="Enter Login ID"></div>
+          <div class="field"><label class="label" for="loginPw">Password</label><input id="loginPw" type="password" class="input" placeholder="Enter Password"></div>
+          <div id="loginMsg" class="fine"></div>
+        </div>
+        <div class="login-foot"><button id="loginBtn" class="btn" style="min-width:120px">Log In</button></div>
+        <div class="fine-foot"><div class="fine">© 2025 RockTechnology • v1.0.0 • Support: 7869731689</div></div>
+      </div>
+    </section>
+
+    <!-- App -->
+    <section id="appView" class="app-card hidden">
+      <div class="tab-bar">
+        <button class="pill active" data-tab="naksha">नक्शा तरमीम</button>
+        <button class="pill" data-tab="simankan">सीमांकन</button>
+        <button class="pill" data-tab="varisana">वारिसाना</button>
+        <div class="badge">Client‑side DOCX</div>
+      </div>
+
+      <!-- TAB 1 -->
+      <div id="tab-naksha" class="page active">
+        <div class="sheet">
+          <div class="box"><div class="mini">न्यायालय {Court}</div><input id="Court" class="input" list="courtList" placeholder="न्यायालय चुनें/टाइप करें"><datalist id="courtList"><option>तहसील-सिंगरौली नगर</option><option>वृत्त-पंजरेह, तहसील-सिंगरौली नगर</option><option>वृत्त-कचनी, तहसील-सिंगरौली नगर</option></datalist></div>
+          <div class="grid2" style="margin-top:12px;">
+            <div class="box"><div class="mini">भूमि ग्राम {Vill}</div><input id="Vill" class="input" list="villageList" placeholder="ग्राम चुनें/टाइप करें"><datalist id="villageList"><option>गनियारी</option><option>देवरा</option><option>बैढ़न</option></datalist></div>
+            <div class="box"><div class="mini">खसरा व रकबा विवरण {LandDetails}</div><textarea id="LandDetails" class="input"></textarea></div>
+          </div>
+          <div class="grid" style="margin-top:12px;">
+            <div class="box"><div class="mini">आवेदक {AppType}</div><input id="AppType" class="input" list="appTypeList" placeholder="आवेदक प्रकार"><datalist id="appTypeList"><option>आवेदक</option><option>आवेदिका</option><option>आवेदकगण</option><option>आवेदिकागण</option></datalist></div>
+            <div class="box"><div class="mini">नाम, पिता/पति {AppName}</div><textarea id="AppName" class="input"></textarea></div>
+            <div class="box"><div class="mini">पता {AppAdd}</div><textarea id="AppAdd" class="input"></textarea></div>
+          </div>
+          <div class="grid" style="margin-top:12px;">
+            <div class="box"><div class="mini">अनावेदक {DepType}</div><input id="DepType" class="input" list="depTypeList" placeholder="अनावेदक प्रकार"><datalist id="depTypeList"><option>अनावेदक</option><option>अनावेदिका</option><option>अनावेदकगण</option><option>अनावेदिकागण</option></datalist></div>
+            <div class="box"><div class="mini">नाम, पिता/पति {DepName}</div><textarea id="DepName" class="input"></textarea></div>
+            <div class="box"><div class="mini">पता {DepAdd}</div><textarea id="DepAdd" class="input"></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 2 -->
+      <div id="tab-simankan" class="page">
+        <div class="sheet">
+          <div class="box"><div class="mini">न्यायालय {Court}</div><input id="s_Court" class="input" list="courtList" placeholder="न्यायालय चुनें/टाइप करें"></div>
+          <div class="grid2" style="margin-top:12px;">
+            <div class="box"><div class="mini">भूमि ग्राम {Vill}</div><input id="s_Vill" class="input" list="villageList" placeholder="ग्राम चुनें/टाइप करें"></div>
+            <div class="box"><div class="mini">खसरा व रकबा विवरण {LandDetails}</div><textarea id="s_LandDetails" class="input"></textarea></div>
+          </div>
+          <div class="grid" style="margin-top:12px;">
+            <div class="box"><div class="mini">आवेदक {AppType}</div><input id="s_AppType" class="input" list="appTypeList" placeholder="आवेदक प्रकार"></div>
+            <div class="box"><div class="mini">नाम, पिता/पति {AppName}</div><textarea id="s_AppName" class="input"></textarea></div>
+            <div class="box"><div class="mini">पता {AppAdd}</div><textarea id="s_AppAdd" class="input"></textarea></div>
+          </div>
+          <div class="grid" style="margin-top:12px;">
+            <div class="box"><div class="mini">अनावेदक {DepType}</div><input id="s_DepType" class="input" list="depTypeList" placeholder="अनावेदक प्रकार"></div>
+            <div class="box"><div class="mini">नाम, पिता/पति {DepName}</div><textarea id="s_DepName" class="input"></textarea></div>
+            <div class="box"><div class="mini">पता {DepAdd}</div><textarea id="s_DepAdd" class="input"></textarea></div>
+          </div>
+          <div class="box" style="margin-top:12px;"><div class="mini">चतुर्सीमा {Boundary}</div><textarea id="Boundary" class="input" rows="4"></textarea></div>
+        </div>
+      </div>
+
+      <!-- TAB 3 -->
+      <div id="tab-varisana" class="page">
+        <div class="sheet">
+          <div class="box"><div class="mini">न्यायालय {Court}</div><input id="v_Court" class="input" list="courtList" placeholder="न्यायालय चुनें/टाइप करें"></div>
+          <div class="grid2" style="margin-top:12px;">
+            <div class="box"><div class="mini">भूमि ग्राम {Vill}</div><input id="v_Vill" class="input" list="villageList" placeholder="ग्राम चुनें/टाइप करें"></div>
+            <div class="box"><div class="mini">खसरा व रकबा विवरण {LandDetails}</div><textarea id="v_LandDetails" class="input"></textarea></div>
+          </div>
+          <div class="grid" style="margin-top:12px;">
+            <div class="box"><div class="mini">आवेदक {AppType}</div><input id="v_AppType" class="input" list="appTypeList" placeholder="आवेदक प्रकार"></div>
+            <div class="box"><div class="mini">नाम, पिता/पति {AppName}</div><textarea id="v_AppName" class="input"></textarea></div>
+            <div class="box"><div class="mini">पता {AppAdd}</div><textarea id="v_AppAdd" class="input"></textarea></div>
+          </div>
+          <div class="grid" style="margin-top:12px%;">
+            <div class="box"><div class="mini">अनावेदक {DepType}</div><input id="v_DepType" class="input" list="depTypeList" placeholder="अनावेदक प्रकार"></div>
+            <div class="box"><div class="mini">नाम, पिता/पति {DepName}</div><textarea id="v_DepName" class="input"></textarea></div>
+            <div class="box"><div class="mini">पता {DepAdd}</div><textarea id="v_DepAdd" class="input"></textarea></div>
+          </div>
+          <div class="grid2" style="margin-top:12px;grid-template-columns:1fr 2fr;">
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div class="box"><div class="mini">मृत भूस्वामी का नाम {DLO}</div><textarea id="DLO" class="input" style="min-height:40px;"></textarea></div>
+              <div class="box"><div class="mini">मृत्यु दिनांक {DD}</div><input id="DD" class="input" type="text" placeholder="DD/MM/YYYY"></div>
+            </div>
+            <div class="box"><div class="mini">विधिक वारिस {Legalheir}</div><textarea id="Legalheir" class="input" style="min-height:124px;"></textarea></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gen-right">
+        <input id="fileName" class="input" style="max-width:260px;" placeholder="File name (without .docx)">
+        <button id="resetBtn" class="btn ghost">Reset</button>
+        <button id="genBtn" class="btn">Generate .docx</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Correct script order: PizZip -> Docxtemplater -> FileSaver -->
+  <script src="https://cdn.jsdelivr.net/npm/pizzip@3.1.7/dist/pizzip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docxtemplater@3.39.0/build/docxtemplater.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+
+  <script>
+  const $ = (q)=>document.querySelector(q);
+
+  // Auth
+  loginBtn.addEventListener('click', ()=>{
+    const id = loginId.value.trim(), pw = loginPw.value.trim();
+    if(!id || !pw){ loginMsg.textContent='Login ID और Password आवश्यक हैं।'; return; }
+    if(id==='admin' && pw==='admin'){ loginMsg.textContent='Login success.'; setTimeout(()=>{loginView.classList.add('hidden');appView.classList.remove('hidden');logoutBtn.classList.remove('hidden');},250);}
+    else{ loginMsg.textContent='अमान्य credentials.'; }
+  });
+  logoutBtn.addEventListener('click', ()=>{
+    appView.classList.add('hidden'); loginView.classList.remove('hidden'); logoutBtn.classList.add('hidden');
+    loginId.value=''; loginPw.value=''; loginMsg.textContent='';
+  });
+
+  // Tabs
+  document.querySelectorAll('.pill').forEach(p=>{
+    p.addEventListener('click', ()=>{
+      document.querySelectorAll('.pill').forEach(x=>x.classList.remove('active'));
+      p.classList.add('active');
+      document.querySelectorAll('.page').forEach(pg=>pg.classList.remove('active'));
+      document.querySelector('#tab-'+p.dataset.tab).classList.add('active');
+    });
+  });
+
+  // Reset
+  resetBtn.addEventListener('click', ()=>{
+    const ids = ['Court','Vill','LandDetails','AppType','AppName','AppAdd','DepType','DepName','DepAdd','fileName',
+      's_Court','s_Vill','s_LandDetails','s_AppType','s_AppName','s_AppAdd','s_DepType','s_DepName','s_DepAdd','Boundary',
+      'v_Court','v_Vill','v_LandDetails','v_AppType','v_AppName','v_AppAdd','v_DepType','v_DepName','v_DepAdd','DLO','Legalheir','DD'];
+    ids.forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
+  });
+
+  // Template-based generator (GitHub Raw)
+  const repoRawBase = 'https://raw.githubusercontent.com/rocktech-web/docx-templates/main/';
+
+  async function fetchTemplateBytes(fileName){
+    const url = repoRawBase + fileName;
+    const res = await fetch(url,{cache:'no-store'});
+    if(!res.ok) throw new Error('Template fetch failed: '+res.status+' for '+url);
+    return await res.arrayBuffer();
+  }
+  function sanitizeFileName(name, def){
+    const raw = name || def;
+    let base = raw.replace(/[\\/:*?"<>|]/g,'').trim();
+    return base.toLowerCase().endsWith('.docx') ? base : base + '.docx';
+  }
+  function fillAndSave(arrayBuffer, data, outName){
+    if(typeof PizZip==='undefined' || typeof window.docxtemplater==='undefined'){
+      alert('Libraries not loaded. कृपया CDN/नेटवर्क जाँचें.'); return;
+    }
+    const zip = new PizZip(arrayBuffer);
+    const doc = new window.docxtemplater().loadZip(zip).setOptions({linebreaks:true, paragraphLoop:true});
+    doc.setData(data);
+    try{ doc.render(); }
+    catch(e){ console.error(e); alert('Template render error: '+e.message); return; }
+    const blob = doc.getZip().generate({type:'blob', mimeType:'application/vnd.openxmlformats-officedocument.wordprocessingml.document'});
+    saveAs(blob, outName);
+  }
+
+  const collectNaksha = ()=>({
+    Court: Court.value.trim(), Vill: Vill.value.trim(), LandDetails: LandDetails.value.trim(),
+    AppType: AppType.value.trim(), AppName: AppName.value.trim(), AppAdd: AppAdd.value.trim(),
+    DepType: DepType.value.trim(), DepName: DepName.value.trim(), DepAdd: DepAdd.value.trim()
+  });
+  const collectSimankan = ()=>({
+    Court: s_Court.value.trim(), Vill: s_Vill.value.trim(), LandDetails: s_LandDetails.value.trim(),
+    AppType: s_AppType.value.trim(), AppName: s_AppName.value.trim(), AppAdd: s_AppAdd.value.trim(),
+    DepType: s_DepType.value.trim(), DepName: s_DepName.value.trim(), DepAdd: s_DepAdd.value.trim(),
+    Boundary: Boundary.value.trim()
+  });
+  const collectVarisana = ()=>({
+    Court: v_Court.value.trim(), Vill: v_Vill.value.trim(), LandDetails: v_LandDetails.value.trim(),
+    AppType: v_AppType.value.trim(), AppName: v_AppName.value.trim(), AppAdd: v_AppAdd.value.trim(),
+    DepType: v_DepType.value.trim(), DepName: v_DepName.value.trim(), DepAdd: v_DepAdd.value.trim(),
+    DLO: DLO.value.trim(), Legalheir: Legalheir.value.trim(), DD: DD.value.trim()
+  });
+
+  async function generateCurrentTab(){
+    const active = document.querySelector('.pill.active').dataset.tab;
+    try{
+      if(active==='naksha'){
+        const data = collectNaksha();
+        const bytes = await fetchTemplateBytes('Naksha.docx');
+        const fname = sanitizeFileName(fileName.value, `Naksha-Tarmim-${data.Vill}`);
+        fillAndSave(bytes, data, fname);
+      }else if(active==='simankan'){
+        const data = collectSimankan();
+        const bytes = await fetchTemplateBytes('Simankan.docx');
+        const fname = sanitizeFileName(fileName.value, `Simankan-${data.Vill}`);
+        fillAndSave(bytes, data, fname);
+      }else if(active==='varisana'){
+        const data = collectVarisana();
+        const bytes = await fetchTemplateBytes('Varisana.docx');
+        const fname = sanitizeFileName(fileName.value, `Varisana-${data.Vill}`);
+        fillAndSave(bytes, data, fname);
+      }
+    }catch(err){
+      console.error(err);
+      alert('Download failed: '+err.message+'\nकृपया Raw URL/नेटवर्क जाँचें।');
+    }
+  }
+  genBtn.addEventListener('click', generateCurrentTab);
+  </script>
+</body>
+</html>

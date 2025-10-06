@@ -166,7 +166,7 @@
   loginBtn.addEventListener('click', ()=>{
     const id = loginId.value.trim(), pw = loginPw.value.trim();
     if(!id || !pw){ loginMsg.textContent='Login ID और Password आवश्यक हैं।'; return; }
-    if(id==='admin' && pw==='admin'){ loginMsg.textContent='Login success.'; setTimeout(()=>{loginView.classList.add('hidden');appView.classList.remove('hidden');logoutBtn.classList.remove('hidden');},250);}
+    if(id==='RockTechnology' && pw==='Manish@31689'){ loginMsg.textContent='Login success.'; setTimeout(()=>{loginView.classList.add('hidden');appView.classList.remove('hidden');logoutBtn.classList.remove('hidden');},250);}
     else{ loginMsg.textContent='अमान्य credentials.'; }
   });
   logoutBtn.addEventListener('click', ()=>{
